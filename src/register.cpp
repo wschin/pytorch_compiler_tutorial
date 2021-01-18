@@ -24,7 +24,7 @@ PYBIND11_MODULE(pointwise_compiler, m) {
 
   // First, register a pass that will coalesce operators we can handle
   // into a single operator containing a subgraph.
-  static RegisterPass pass([pointwise_compiler_symbol](std::shared_ptr<Graph>& g) {
+  RegisterPass pass([pointwise_compiler_symbol](std::shared_ptr<Graph>& g) {
     std::cout << "Register new pass" << std::endl;
     CustomFuseGraph(g, PointwiseCompiler::supported, pointwise_compiler_symbol);
     std::cout << *g << std::endl;
@@ -32,9 +32,6 @@ PYBIND11_MODULE(pointwise_compiler, m) {
 
   // We are only dealing with pure operations (no aliasing or in place
   // mutation), so our subgraph will always be pure.
-  // auto options = c10::RegisterOperators::options();
-  // options.setAliasAnalysis(AliasAnalysisKind::PURE);
-
   torch::jit::OperationCreator op_creator = [] (const Node* node) -> torch::jit::Operation {
         auto compiler = std::make_shared<PointwiseCompiler>(node);
         return [compiler](torch::jit::Stack* stack) {
@@ -42,7 +39,7 @@ PYBIND11_MODULE(pointwise_compiler, m) {
         };
       };
 
-  static RegisterOperators op({Operator(
+  torch::jit::RegisterOperators op({Operator(
       pointwise_compiler_symbol, op_creator,
       c10::AliasAnalysisKind::PURE_FUNCTION)});
 

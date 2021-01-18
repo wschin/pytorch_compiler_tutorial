@@ -36,8 +36,10 @@ def foo_compiled(a, b):
   a = c.mul(a)
   return a
 
-print("-- Transformed IR --\n", foo_compiled.graph_for(A,B))
 C_compiled = foo_compiled(A,B)
+print("-- Transformed IR --\n", foo_compiled.graph_for(A,B))
 print("Compiled version took {:.2f}ms".format(1000 * benchmark(foo_compiled)))
 
 assert torch.allclose(C_jit, C_compiled)
+
+print("-- Transformed IR --\n", foo_compiled.graph_for(A,B))

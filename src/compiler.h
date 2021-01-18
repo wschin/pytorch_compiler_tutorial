@@ -1,7 +1,7 @@
 // All we need to understand PyTorch
-#include <torch/csrc/jit/ir.h>
+#include <torch/csrc/jit/ir/ir.h>
 // CompleteArgumentSpec (useful for caching)
-#include <torch/csrc/jit/argument_spec.h>
+#include <torch/csrc/jit/runtime/argument_spec.h>
 // Our assembler
 #include <asmjit/asmjit.h>
 

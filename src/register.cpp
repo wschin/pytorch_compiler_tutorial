@@ -25,9 +25,7 @@ PYBIND11_MODULE(pointwise_compiler, m) {
   // First, register a pass that will coalesce operators we can handle
   // into a single operator containing a subgraph.
   RegisterPass pass([pointwise_compiler_symbol](std::shared_ptr<Graph>& g) {
-    std::cout << "Register new pass" << std::endl;
     CustomFuseGraph(g, PointwiseCompiler::supported, pointwise_compiler_symbol);
-    std::cout << *g << std::endl;
   });
 
   // We are only dealing with pure operations (no aliasing or in place

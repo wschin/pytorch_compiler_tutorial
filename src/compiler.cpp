@@ -76,13 +76,10 @@ class RegisterManager {
 };
 
 bool PointwiseCompiler::supported(const torch::jit::Node* node) {
-  std::cout << "Check if Supported " << node->kind() << std::endl;
   switch (node->kind()) {
     case aten::mul:
-      std::cout << "Supported" << std::endl;
       return true;
     default:
-      std::cout << "Not supported" << std::endl;
       return false;
   }
   return false;
@@ -253,9 +250,7 @@ CompiledCode PointwiseCompiler::compile(
     }
 
     // Run the function
-    std::cout << "Run ASM code" << std::endl;
     fn(args.data());
-    std::cout << "Run ASM code done" << std::endl;
 
     return outputs;
   };

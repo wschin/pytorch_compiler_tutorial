@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.7)
 
+set (CMAKE_VERBOSE_MAKEFILE on)
+
 file(GLOB COMPILER_SRCS
   ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp
 )
@@ -26,10 +28,8 @@ link_directories(${PYTORCH_DIR}/lib)
 add_subdirectory(pybind11)
 add_subdirectory(asmjit)
 
-find_library(TORCH_PYTHON_LIBRARY torch_python PATHS "${PYTORCH_DIR}/lib")
-message(STATUS "TORCH_PYTHON_LIBRARY: ${TORCH_PYTHON_LIBRARY}")
 pybind11_add_module(pointwise_compiler SHARED ${COMPILER_SRCS})
-target_link_libraries(pointwise_compiler PUBLIC torch pybind11 asmjit ${TORCH_PYTHON_LIBRARY})
+target_link_libraries(pointwise_compiler PUBLIC torch pybind11 asmjit torch_python)
 
 
 target_include_directories(pointwise_compiler PUBLIC

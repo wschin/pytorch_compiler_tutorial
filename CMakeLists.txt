@@ -28,8 +28,11 @@ link_directories(${PYTORCH_DIR}/lib)
 add_subdirectory(pybind11)
 add_subdirectory(asmjit)
 
+list(APPEND CMAKE_PREFIX_PATH ${PYTORCH_DIR} /usr/local/cuda-11)
+find_package(Torch REQUIRED)
+
 pybind11_add_module(pointwise_compiler SHARED ${COMPILER_SRCS})
-target_link_libraries(pointwise_compiler PUBLIC torch pybind11 asmjit torch_python)
+target_link_libraries(pointwise_compiler PUBLIC "${TORCH_LIBRARIES}" pybind11 asmjit torch_python)
 
 
 target_include_directories(pointwise_compiler PUBLIC
